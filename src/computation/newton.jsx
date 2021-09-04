@@ -11,7 +11,7 @@ export const computeNewton = (x0, equation, derivative, error) => {
 
     let count = 0
     let init = true
-    while (count < 15) {
+    while (init === true) {
         let x = result.length === 0 ? x0 : result[result.length - 1].x1
         let  fx =  roundOff(simplified.evaluate({ x: x }))
         let  fx1 =  roundOff(simplified2.evaluate({ x: x }))
@@ -28,6 +28,11 @@ export const computeNewton = (x0, equation, derivative, error) => {
         count++
         if (errorResult === true) {
             init = false
+        }
+
+        if (count === 100) {
+            console.log('[ERROR] : ', 'Max Iteration')
+            break
         }
 
     }

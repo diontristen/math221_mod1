@@ -1,5 +1,5 @@
 import {
-    derivative, simplify,
+    derivative, simplify,evaluate
   } from 'mathjs'
 
   export const firstDerivative = (equation, variable) => {
@@ -12,9 +12,23 @@ import {
 
 
 
+export const evaluateEquation = (data) => {
+    let answer
+    data.forEach((item, index) => {
+        if (index === 0) {
+            answer = `(${item.test})`
+        } else {
+            answer = `${answer}+(${item.test})`
+        }
+    })
+    console.log('ans', answer)
+    let x = simplify(answer)
+    let result = traverseOperation(x)
+    console.log('result' ,result)
+    // return result  
+}
 
 const traverseOperation = (node) => {
-    console.log(node)
     switch (node.type) {
         case 'OperatorNode':
             return operationNode(node) 
@@ -49,7 +63,6 @@ const operationNode = (node) => {
         }
     })
 
-    console.log(result , v)
     return v 
 }
 

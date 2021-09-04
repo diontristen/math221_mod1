@@ -1,3 +1,3 @@
 export const roundOff = (number) => {
-    return Number(Math.round(number+'e'+4)+'e-'+4);
+    return Number(Math.round(parseFloat(number)+'e'+7)+'e-'+7);
 }
