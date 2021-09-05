@@ -7,7 +7,9 @@ export default function index() {
             <br/>
             <a href="/newton">Newton</a>
             <br/>
-            <a href="/gauss-sidel">Gauss Sidel</a>
+            <a href="/gaussSidel">Gauss Sidel</a>
+            <br/>
+            <a href="/lagrange">Lagrange </a>
         </div>
     )
 }

@@ -1,6 +1,7 @@
-import { roundOff } from "../util/parser"
 
-
+import {
+    round
+} from 'mathjs'
 /**
  * 
  * @param {array} data - given matrix
@@ -26,8 +27,7 @@ export const rearrangeData = (data) => {
     return newData
 }
 
-export const computeGaussSidel = (data, error) => {
-    let nRows = data.length
+export const computeGaussSidel = (data, error, decimal) => {
     let nCol = data[0].length - 1
 
     let count = 0
@@ -37,10 +37,10 @@ export const computeGaussSidel = (data, error) => {
     let init = true
     while (init === true) {
         for (let j = 0; j < nCol; j++) {
-            let result = compute(j, newData, data[j])
+            let result = compute(j, newData, data[j], decimal)
             newData[j] = result
             if (count !== 0) {
-                let errorResult = computeError(tabulated[count -1][j], result, error)
+                let errorResult = computeError(tabulated[count -1][j], result, error, decimal)
                 newError[j] = errorResult
             }
         }
@@ -53,11 +53,12 @@ export const computeGaussSidel = (data, error) => {
         tabulated.push(tabulatedResult)
         count++
     }
+
     return tabulated
 
 }
 
-const compute = (index, variables, constants) => {
+const compute = (index, variables, constants, decimal) => {
     let c = constants[constants.length - 1]
     let divisor = constants[index]
     let difference = c
@@ -68,10 +69,53 @@ const compute = (index, variables, constants) => {
         }
     }
 
-    return roundOff(difference / divisor)
+    return round(difference / divisor, decimal)
 }
 
 
-const computeError = (x0,x1, error) => {
-    return Math.abs(roundOff(x1-x0)) < error ? true : false
+const computeError = (x0,x1, error, decimal) => {
+    return Math.abs(round(x1-x0, decimal)) < error ? true : false
+}
+
+export const parseResult = (data,  noRoots) => {
+    let result = []
+    let errorIndex = 2 * noRoots
+    data.forEach((value, index) => {
+        let data = {}
+        data['k'] = index
+        let xCount = 0
+        while(xCount < noRoots) {
+            data[`X${xCount + 1}`] = value[xCount]
+            xCount++
+        }
+        let eCount = xCount
+        let nameCount = 0
+        while (eCount < errorIndex) {
+            data[`ErX${nameCount + 1}`] = value[eCount] === true ? 'TRUE' : 'FALSE'
+            eCount++
+            nameCount++
+        }
+
+        result.push(data)
+    })
+    return result
+}
+
+export const parseColumn = (data) => {
+    let column = []
+    Object.keys(data[0]).forEach((value, index) => {
+        console.log(index)
+        let data = {
+            title: value,
+            dataIndex: value,
+            key: value
+        }
+
+        column.push(data)
+    })
+    return column
+}
+
+export const getRoots = (data) => {
+    
 }

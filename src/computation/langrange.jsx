@@ -1,47 +1,85 @@
 import {
-    evaluate, simplify, round
+    evaluate, simplify, round, forEach
 } from 'mathjs'
 import nerdamer from 'nerdamer'
-import { roundOff } from '../util/parser'
+import Polynomial from 'polynomial'
 
-export const computeLagrange = (data) => {
+
+export const computeLagrange = (data, x) => {
     let numberOfDataPoints = data.length
 
     let results = []
 
     for (let i = 0; i < numberOfDataPoints; i++) {
         let numerator = computeNumerator(data, i, numberOfDataPoints)
-        // console.log('[numerator]: ', numerator.text())
         let denominator = computeDenominator(data, i, numberOfDataPoints)
         denominator = round(denominator.text(), 5)
-        // console.log('[denominator]: ', denominator.text())
         let simplified = round(simplifyFraction(data[i][1], denominator) ,5)
-        // console.log('[simplified]: ', simplified)
-
 
 
         let lagrange = {
-            numerator: numerator.text(),
+            numerator: numerator,
             denominator: denominator,
             simplified,
-            test: nerdamer(`(${numerator})*${simplified}`).text()
+            equation: Polynomial(numerator).mul(simplified).toString()
         }
 
         results.push(lagrange)
     }
 
+    let answer = getFinalEquation(results)
+    let final = Polynomial(answer).eval(x)
+    final = round(final, 5)
+    console.log('final', final)
+    return {
+        answer,
+        results,
+        final
+    }
+}
+
+
+const getAnswer = (x, equation) => {
+    
+}
+
+const getFinalEquation = (data) => {
     let answer = ""
 
-    results.forEach((item, index) => {
+    data.forEach((item, index) => {
         if (index === 0) {
-            answer = item.test
+            answer = item.equation
         } else {
-            answer = nerdamer.expand(`(${answer})+(${item.test})`).text()
+        
+            answer = Polynomial(answer).add(item.equation).toString()
         }
     })
-        
-    console.log('[ANSWER]: ', answer)
-    return results
+
+    let coeff = Polynomial(answer).coeff
+    let equation = parseEquation(coeff)
+    return equation
+}
+
+const parseEquation = (coeff) => {
+    let maxOrder = Object.keys(coeff).length - 1
+    let result = ''
+    Object.values(coeff).reverse().forEach((value, index) => {
+        let number = value.toString()
+        let operator = number.substring(0,1) === '-' ? '-' : '+'
+        number = number.substring(0,1) === '-' ? number.substring(1) : number
+        let suffix = ''
+          
+        if (index !== maxOrder) {
+            suffix =  maxOrder - index > 1 ? `x^${maxOrder - index}` : 'x' 
+        }
+        if (result === '') {
+            result = `${round(number,5)}${suffix}`
+        } else {
+            result = `${result}${operator}${round(number,5)}${suffix}` 
+
+        }
+    })
+    return result
 }
 
 
@@ -49,10 +87,16 @@ const computeNumerator = (data, index, total) => {
     let numerator = ''
     for (let i = 0; i < total; i++) {
         if (i !== index) {
-            numerator = numerator + `(x-${data[i][0]})`
+            let number = data[i][0].toString()
+            let operator = number.substring(0,1) === '-' ? '+' : '-'
+            number = number.substring(0,1) === '-' ? number.substring(1) : number
+            if (numerator === '') {
+                numerator = `x${operator}${number}`
+            } else {
+                numerator = Polynomial(numerator).mul(`x${operator}${number}`).toString()
+            }
         }
     }
-    numerator = nerdamer.expand(numerator)
     return numerator
 }
 

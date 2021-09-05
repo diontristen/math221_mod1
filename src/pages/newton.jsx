@@ -8,9 +8,10 @@ export default function NewtonPage() {
     const[input, setInput] = useState('')
     const[input2, setInput2] = useState('')
     const [output, setOutput] = useState('')
+    const [roundOff, setRoundOff] = useState('5')
 
     const derive = () => {
-        let result = computeNewton(parseInt(initial), input, input2, 0.0001)
+        let result = computeNewton(parseInt(initial), input, input2, 0.0001, parseInt(roundOff))
         setOutput(result)
         console.log(result)
     }
@@ -32,6 +33,12 @@ export default function NewtonPage() {
             <input
                 onChange={(e) => {
                     setInput2(e.target.value)
+                }}
+            >
+            </input>
+            <input
+                onChange={(e) => {
+                    setRoundOff(e.target.value)
                 }}
             >
             </input>
