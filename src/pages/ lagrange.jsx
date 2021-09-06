@@ -73,7 +73,7 @@ export default function  LagrangePage() {
         1  2 \n
     ` 
     let note = `Take Note: \n
-    *It will only accepts the first 2 numbers per line.
+    *It will only accept the first 2 numbers per line separated by space.
     `
 
     return (
@@ -135,7 +135,7 @@ export default function  LagrangePage() {
                     </Col>
                 <Col className="gutter-row" xs={6} sm={6} md={6} lg={6} xl={6}>
                             <Text>
-                                Decimal Points
+                                Decimal Point
                             </Text>
                             <Input type="number" onChange={changeDecimal} placeholder="5" />
                 </Col>
