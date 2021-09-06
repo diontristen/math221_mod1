@@ -5,7 +5,8 @@ import nerdamer from 'nerdamer'
 import Polynomial from 'polynomial'
 
 
-export const computeLagrange = (data, x) => {
+export const computeLagrange = (data, x, decimal) => {
+    console.log('data',data)
     let numberOfDataPoints = data.length
 
     let results = []
@@ -13,8 +14,8 @@ export const computeLagrange = (data, x) => {
     for (let i = 0; i < numberOfDataPoints; i++) {
         let numerator = computeNumerator(data, i, numberOfDataPoints)
         let denominator = computeDenominator(data, i, numberOfDataPoints)
-        denominator = round(denominator.text(), 5)
-        let simplified = round(simplifyFraction(data[i][1], denominator) ,5)
+        denominator = round(denominator.text(), decimal)
+        let simplified = round(simplifyFraction(data[i][1], denominator, decimal) ,decimal)
 
 
         let lagrange = {
@@ -27,9 +28,9 @@ export const computeLagrange = (data, x) => {
         results.push(lagrange)
     }
 
-    let answer = getFinalEquation(results)
+    let answer = getFinalEquation(results, decimal)
     let final = Polynomial(answer).eval(x)
-    final = round(final, 5)
+    final = round(final, decimal)
     console.log('final', final)
     return {
         answer,
@@ -43,7 +44,7 @@ const getAnswer = (x, equation) => {
     
 }
 
-const getFinalEquation = (data) => {
+const getFinalEquation = (data, decimal) => {
     let answer = ""
 
     data.forEach((item, index) => {
@@ -56,11 +57,11 @@ const getFinalEquation = (data) => {
     })
 
     let coeff = Polynomial(answer).coeff
-    let equation = parseEquation(coeff)
+    let equation = parseEquation(coeff, decimal)
     return equation
 }
 
-const parseEquation = (coeff) => {
+const parseEquation = (coeff, decimal) => {
     let maxOrder = Object.keys(coeff).length - 1
     let result = ''
     Object.values(coeff).reverse().forEach((value, index) => {
@@ -73,9 +74,9 @@ const parseEquation = (coeff) => {
             suffix =  maxOrder - index > 1 ? `x^${maxOrder - index}` : 'x' 
         }
         if (result === '') {
-            result = `${round(number,5)}${suffix}`
+            result = `${round(number,decimal)}${suffix}`
         } else {
-            result = `${result}${operator}${round(number,5)}${suffix}` 
+            result = `${result}${operator}${round(number,decimal)}${suffix}` 
 
         }
     })
@@ -111,6 +112,6 @@ const computeDenominator = (data, index, total) => {
     return denominator
 }
 
-const simplifyFraction = (numerator, denominator) => {
-    return round(numerator / parseFloat(denominator), 5)
+const simplifyFraction = (numerator, denominator, decimal) => {
+    return round(numerator / parseFloat(denominator), decimal)
 }
