@@ -1,0 +1,17 @@
+
+.fraction {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle; 
+    letter-spacing: 0.001em;
+    text-align: center;
+    font-size: 12px;
+    }
+  .fraction > span { 
+    display: block; 
+    padding: 0.1em; 
+    font-weight: 900;
+
+    }
+  .fraction span.fdn {border-top: thin solid black;}
+  .fraction span.bar {display: none;}

@@ -3,6 +3,7 @@ import './App.css';
 import "antd/dist/antd.css";
 
 import './styles/table.css'
+import './styles/general.css'
 
 import {
   BrowserRouter as Router,
@@ -13,7 +14,6 @@ import {
 
 
 import index from './pages/index';
-import gaussSidel from './pages/gaussSidel';
 import gaussSidelv2 from './pages/gaussSidelv2';
 import NewtonPage from './pages/newton';
 import LagrangePage from './pages/ lagrange';
