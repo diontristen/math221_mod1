@@ -48,8 +48,11 @@ export default function  LagrangePage() {
     }
 
     let instruction = `
-        Enter the given matrix
-    `
+        Enter the given \n
+        5 2 \n
+        3 2 \n
+        1 2 \n
+    ` 
 
     return (
         <LayoutComponent>

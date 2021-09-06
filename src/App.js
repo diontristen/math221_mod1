@@ -2,6 +2,8 @@ import logo from './logo.svg';
 import './App.css';
 import "antd/dist/antd.css";
 
+import './styles/table.css'
+
 import {
   BrowserRouter as Router,
   Switch,

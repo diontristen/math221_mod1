@@ -1,48 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { rearrangeData, computeGaussSidel, parseResult, parseColumn } from '../computation/gaussSidelv2'
 import LayoutComponent from '../components/Layout'
 
-import { Typography, Layout, Input, Row, Col, Button, Table } from 'antd';
-
+import { Typography, Layout, Input, Row, Col, Button, Table, Space } from 'antd';
+import { ArrowRightOutlined } from '@ant-design/icons';
 const { Title, Text } = Typography;
-const { TextArea } = Input;
-
-
-
-
-let data1 = [
-    [
-        5,
-        3,
-        -7,
-        0
-    ],
-    [
-        3,
-        -5,
-        2,
-        -8,
-    ],
-    [
-        7,
-        5,
-        -3,
-        16
-    ]
-]
-
-let data2 = [
-    [
-        1,
-        -5,
-        -4
-    ],
-    [
-        7,
-        -1,
-        6,
-    ],
-]
 
 
 
@@ -51,10 +13,13 @@ export default function GaussSidel() {
 
     const [noRoots, setNoRoots] = useState(3)
     const [dataPoints, setDataPoints] = useState([])
-    const [iterationRule, setIterationRule] = useState('')
+    const [iterationRule, setIterationRule] = useState(0.0001)
     const [decimalPoints, setDecimalPoints] = useState(5)
-    const [arrayTable, setArrayTable] = useState([])
+    const [rearrangeDataResult, setRearrangeDataResult] = useState([])
     const [roots, setRoots] = useState([])
+    const [solved, setSolved] = useState(false)
+    const [errorInput, setErrorInput] = useState(false)
+    const [rowData, setRowData] = useState([])
     const [columnData, setColumnData] = useState([
         {
             title: 'k',
@@ -72,6 +37,11 @@ export default function GaussSidel() {
             key: 'X2'
         },
         {
+            title: 'X3',
+            dataIndex: 'X3',
+            key: 'X3'
+        },
+        {
             title: 'ErX1',
             dataIndex: 'ErX1',
             key: 'ErX1',
@@ -81,28 +51,17 @@ export default function GaussSidel() {
             dataIndex: 'ErX2',
             key: 'ErX2',
 
+        },
+        {
+            title: 'ErX3',
+            dataIndex: 'ErX3',
+            key: 'ErX3',
+
         }
 
     ])
 
-    const [rowData, setRowData] = useState([])
 
-    const setADataPoint = (value, parentIndex, selfIndex) => {
-        let tempDataPoints = dataPoints
-        if (value !== '') {
-            if (tempDataPoints[parentIndex]) {
-                tempDataPoints[parentIndex][selfIndex] = value
-
-            } else {
-                tempDataPoints[parentIndex] = []
-                tempDataPoints[parentIndex][selfIndex] = value
-            }
-        } else {
-            tempDataPoints[parentIndex].splice(selfIndex)
-        }
-        setDataPoints(tempDataPoints)
-
-    }
 
 
     const roundOffLower = () => {
@@ -113,7 +72,7 @@ export default function GaussSidel() {
         return [...Array(noRoots).keys()].map((value, index) => (
             <Row
                 style={{
-                    marginTop: 15
+                    marginTop: index === 0 ? 0 : 15
                 }}
                 gutter={12}>
                 {renderInputs(index)}
@@ -151,6 +110,7 @@ export default function GaussSidel() {
                     }}
                 >
                     <Input
+                        type="number"
                         onChange={(e) => {
                             setADataPoint(e.target.value, parentIndex, index)
                         }}
@@ -169,6 +129,42 @@ export default function GaussSidel() {
 
         ))
     }
+
+
+    const renderRearrangeDataParent = () => {
+        return rearrangeDataResult.map((value, index) => (
+
+            <Space direction="horitzonal">
+                Equation {index + 1} <ArrowRightOutlined /> {renderRearrangeData(value)}
+            </Space>
+        ))
+    }
+
+    const renderRearrangeData = (data) => {
+        return data.map((value, index) => (
+            <Text>{value}{index === noRoots ? "" : `X${noRoots - index}`} {index === noRoots ? "" : index === noRoots - 1 ? "=" : "+"}</Text>
+        ))
+    }
+
+
+    const setADataPoint = (value, parentIndex, selfIndex) => {
+        let tempDataPoints = dataPoints
+        if (value !== '') {
+            if (tempDataPoints[parentIndex]) {
+                tempDataPoints[parentIndex][selfIndex] = value
+
+            } else {
+                tempDataPoints[parentIndex] = []
+                tempDataPoints[parentIndex][selfIndex] = value
+            }
+        } else {
+            tempDataPoints[parentIndex].splice(selfIndex)
+        }
+        setDataPoints(tempDataPoints)
+        setErrorInput(false)
+
+    }
+
 
     const changeRoot = (e) => {
         let root = parseInt(e.target.value)
@@ -197,14 +193,19 @@ export default function GaussSidel() {
         let validation = checkInput()
         if (validation === true) {
             let reArrangedData1 = rearrangeData(dataPoints)
+            console.log('rearrange', reArrangedData1)
+            setRearrangeDataResult(reArrangedData1)
             let tabulatedResult1 = computeGaussSidel(reArrangedData1, iterationRule, decimalPoints)
             setRoots(tabulatedResult1[tabulatedResult1.length - 1].slice(0, noRoots))
 
             tabulatedResult1 = parseResult(tabulatedResult1, noRoots)
             let newColumn = parseColumn(tabulatedResult1)
             setColumnData(newColumn)
-           
+
             setRowData(tabulatedResult1)
+            setSolved(true)
+        } else {
+            setErrorInput(true)
         }
     }
 
@@ -233,10 +234,10 @@ export default function GaussSidel() {
                         display: "flex"
                     }}
                 >
-                   <Text>
-                        {`X${index+1}`} = {value}
-                   </Text>
-                 
+                    <Text>
+                        {`X${index + 1}`} = {value}
+                    </Text>
+
                 </div>
             </Col>
 
@@ -263,16 +264,39 @@ export default function GaussSidel() {
                         Gauss Sidel
                     </Title>
 
-                    <Text
-                        style={{
-                            marginTop: 1
-                        }}
-                    >
-                        Just another information about Gauss Sidel
-                    </Text>
+                    <Space
+                        size={0.5}
+                        direction="vertical">
+                        <Text
+                            style={{
+                                marginTop: 1,
+                                marginBottom: 0
+                            }}
+                        >
+                            Solving systems of linear equations using
+                            Gauss Seidel method .
+
+                        </Text>
+                        <Text
+                            strong
+                            type="success"
+                            italic
+                            style={{
+                                marginTop: 0,
+                                fontSize: "12px"
+                            }}
+                        >
+                            Note: Solve polynomial equations only
+
+                        </Text>
+                    </Space>
                 </div>
-                <Row gutter={12}>
-                    <Col className="gutter-row" xs={12} sm={12} md={12} lg={12} xl={12}>
+                <Row
+                    style={{
+                        marginTop: 15
+                    }}
+                    gutter={12}>
+                    <Col className="gutter-row" xs={4} sm={4} md={4} lg={4} xl={4}>
                         <Text>
                             Enter number of roots to find
                         </Text>
@@ -285,13 +309,44 @@ export default function GaussSidel() {
                         marginTop: 15
                     }}
                 >
-                    <Text>
-                        Enter the coefficient of the equations.
-                    </Text>
+                    <Space direction="vertical">
+                        <Text
+                            style={{
+                                marginBottom: 0
+                            }}
+                        >
+                            Enter the coefficient of the equations in simplified form.
+
+                        </Text>
+                        <Text
+                            italic
+                            style={{
+                                marginTop: 0,
+                                fontSize: "12px"
+                            }}
+                        >
+                            Note: <br/>
+                            √4 should be entered as 2,
+                            <br />
+                            4/2 should also be entered as 2
+                        </Text>
+                        <Text
+                            hidden={!errorInput}
+                            style={{
+                                marginBottom: 0
+                            }}
+                            type="danger"
+                        >
+                            Make sure to fill out all inputs to solve the for the roots.
+                        </Text>
+
+                    </Space>
+
                     <Row gutter={12}>
+
                         <Col className="gutter-row" xs={24} sm={24} md={24} lg={24} xl={24}>
                             <div>
-                                {renderAllInputs()}
+                                {noRoots > 0 && renderAllInputs()}
                             </div>
                         </Col>
 
@@ -323,24 +378,47 @@ export default function GaussSidel() {
                         Solve
                     </Button>
                 </div>
+
                 <div
+                    hidden={!solved}
                     style={{
                         marginTop: 15
                     }}
                 >
-                    <Text>
-                        The Roots Are:
-                    </Text>
-                    {displayRoots()}
+                    <Space direction="vertical">
+                        <Title
+                            level={5}
+                        >
+                            Rearrange the equation:
+                        </Title>
+                        {solved && renderRearrangeDataParent()}
+                    </Space>
+                    <br />
+                    <div
+                        style={{
+                            marginTop: 15
+                        }}
+                    >
+                        <Title
+                            level={5}
+                        >
+                            The Roots are the following:
+                        </Title>
+                        {displayRoots()}
+
+                    </div>
                 </div>
                 <div
+                    hidden={!solved}
                     style={{
                         marginTop: 15
                     }}
                 >
-                    <Text>
+                    <Title
+                        level={5}
+                    >
                         Tabulated Result
-                    </Text>
+                    </Title>
                     <Table
                         pagination={false}
                         columns={columnData}
