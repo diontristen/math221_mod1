@@ -15,3 +15,33 @@
     }
   .fraction span.fdn {border-top: thin solid black;}
   .fraction span.bar {display: none;}
+
+
+
+
+  .ant-menu-dark .ant-menu-item-selected .ant-menu-item-icon, .ant-menu-dark .ant-menu-item-selected .anticon {
+    color: #9ab34e;
+  }
+
+  .ant-menu-item-icon {
+    color: white;
+  }
+
+  .ant-card-body {
+    padding: 0;
+  }
+
+
+  .img-hover-zoom {
+    overflow: hidden; /* [1.2] Hide the overflowing of child elements */
+  }
+  
+  /* [2] Transition property for smooth transformation of images */
+  .img-hover-zoom img {
+    transition: transform .5s ease;
+  }
+  
+  /* [3] Finally, transforming the image when container gets hovered */
+  .img-hover-zoom:hover img {
+    transform: scale(1.5);
+  }

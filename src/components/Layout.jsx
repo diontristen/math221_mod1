@@ -1,59 +1,82 @@
-import React, {  useState } from 'react'
-import { Layout, Menu, Breadcrumb } from 'antd';
-import {
-    DesktopOutlined,
-    PieChartOutlined,
-    FileOutlined,
-    TeamOutlined,
-    UserOutlined,
-} from '@ant-design/icons';
+import React, { useState, useEffect } from 'react'
+import { Layout, Menu, Typography } from 'antd';
+import { useHistory } from "react-router-dom";
+const { Text } = Typography
 
-
-const { Header, Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
+const { Content, Footer, Sider } = Layout;
 
 
 
-export default function LayoutComponent({children}) {
 
+export default function LayoutComponent({ children }) {
+    let history = useHistory()
     const [collapsed, setCollapsed] = useState(false)
+    const [key, setKey] = useState()
+    useEffect(() => {
+        let path = window.location.pathname
+        path = path.replace('/', '')
+        setKey(path)
+    }, [])
 
 
-    const toggleSidebar  = () => {
+    const toggleSidebar = () => {
         setCollapsed(!collapsed)
     }
 
+
+    const goToPage = (key) => {
+        history.push(`/${key}`)
+    }
+
+
+
     return (
         <Layout style={{ minHeight: '100vh' }}>
+            {console.log('k', key)}
             <Sider collapsible collapsed={collapsed} onCollapse={toggleSidebar}>
-                <div className="logo" />
-                <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-                    <Menu.Item key="1" icon={<PieChartOutlined />}>
-                        Option 1
+                <div className="logo" style={{
+                    padding: 15
+                }}>
+                    <img
+                        style={{
+                            width: "100%", height: "100%"
+                        }}
+                        alt="example"
+                        className="logo"
+                        src="assets/mp_icon.png" />
+                </div>
+                <Menu theme="dark" selectedKeys={[key]} mode="inline">
+                    <Menu.Item key=""
+                        onClick={() => goToPage('')}
+                        icon={<Text >H</Text>}>
+                        Home
                     </Menu.Item>
-                    <Menu.Item key="2" icon={<DesktopOutlined />}>
-                        Option 2
+                    <Menu.Item key="newton"
+                        onClick={() => goToPage('newton')}
+                        icon={<Text >N</Text>}>
+                        Newton
                     </Menu.Item>
-                    <SubMenu key="sub1" icon={<UserOutlined />} title="User">
-                        <Menu.Item key="3">Tom</Menu.Item>
-                        <Menu.Item key="4">Bill</Menu.Item>
-                        <Menu.Item key="5">Alex</Menu.Item>
-                    </SubMenu>
-                    <SubMenu key="sub2" icon={<TeamOutlined />} title="Team">
-                        <Menu.Item key="6">Team 1</Menu.Item>
-                        <Menu.Item key="8">Team 2</Menu.Item>
-                    </SubMenu>
-                    <Menu.Item key="9" icon={<FileOutlined />}>
-                        Files
+                    <Menu.Item
+                        onClick={() => goToPage('gaussSidel')}
+
+                        key="gaussSidel" icon={<Text >GS</Text>}>
+                        Gauss Sidel
+                    </Menu.Item>
+                    <Menu.Item
+                        onClick={() => goToPage('lagrange')}
+                        key="lagrange" icon={<Text >L</Text>}>
+                        Lagrange
                     </Menu.Item>
                 </Menu>
             </Sider>
             <Layout className="site-layout">
-                <Header className="site-layout-background" style={{ padding: 0 }} />
+                {/* <Header className="site-layout-background" style={{ padding: 0 }} > 
+                    Just A Problem
+                </Header> */}
                 <Content style={{ margin: '0 16px' }}>
                     {children}
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>Just A Project ©2021 Created by Aguilar & Agcaoili</Footer>
+                <Footer style={{ textAlign: 'center' }}>Machine Problem ©2021  by Aguilar & Agcaoili</Footer>
             </Layout>
         </Layout>
     )
