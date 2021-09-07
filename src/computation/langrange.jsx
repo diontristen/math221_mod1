@@ -1,10 +1,11 @@
 import {
-    evaluate, simplify, round, forEach
+    evaluate, simplify, round, multiply
 } from 'mathjs'
 import nerdamer from 'nerdamer'
+import { coeffs } from "nerdamer"
 import Polynomial from 'polynomial'
 
-
+Polynomial.trace = true;
 export const computeLagrange = (data, x, decimal) => {
     console.log('data',data)
     let numberOfDataPoints = data.length
@@ -40,23 +41,34 @@ export const computeLagrange = (data, x, decimal) => {
 }
 
 
-const getAnswer = (x, equation) => {
-    
-}
-
 const getFinalEquation = (data, decimal) => {
     let answer = ""
 
     data.forEach((item, index) => {
+        let tempEquation = Polynomial(item.equation).coeff
+        let equation = parseEquation(tempEquation, decimal)
+  
+        console.log('dion 2', equation, index)
         if (index === 0) {
-            answer = item.equation
+            answer = equation
         } else {
-        
-            answer = Polynomial(answer).add(item.equation).toString()
+            console.log('dion final 0', answer)
+            console.log('dion final 0', equation)
+            console.log('dion final 0', item.equation)
+            let tempAnswer = Polynomial(answer).add(equation)
+            let yans = tempAnswer.toString()
+            console.log('dion final XX',yans)
+            answer = parseEquation(tempAnswer.coeff, decimal)
+            console.log('dion final 2',answer)
+            // answer = Polynomial(answer).add(item.equation).toString()
+            // console.log('dion final 1', answer)
+           
         }
     })
 
     let coeff = Polynomial(answer).coeff
+    // console.log('dion  final', answer, Polynomial(answer))
+    // console.log(Polynomial.trace.map(x => x.toString()))
     let equation = parseEquation(coeff, decimal)
     return equation
 }
@@ -67,9 +79,11 @@ const parseEquation = (coeff, decimal) => {
     Object.values(coeff).reverse().forEach((value, index) => {
         let number = value.toString()
         let operator = number.substring(0,1) === '-' ? '-' : '+'
-        number = number.substring(0,1) === '-' ? number.substring(1) : number
+        if (index !== 0) {
+            number = number.substring(0,1) === '-' ?     number.substring(1) : number
+        }
+       
         let suffix = ''
-          
         if (index !== maxOrder) {
             suffix =  maxOrder - index > 1 ? `x^${maxOrder - index}` : 'x' 
         }
@@ -80,6 +94,7 @@ const parseEquation = (coeff, decimal) => {
 
         }
     })
+    console.log('dion 4', result)
     return result
 }
 
