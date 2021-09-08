@@ -124,7 +124,7 @@ export default function NewtonPage() {
                                 marginBottom: 0
                             }}
                         >
-                            Root of an equation using NEwton Method
+                            Root of an equation using Newton Method
                         </Text>
                         <Text
                             strong

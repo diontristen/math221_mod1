@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import { computeLagrange } from '../computation/langrange'
 import {
     evaluate, simplify, 
 } from 'mathjs'
 import LayoutComponent from '../components/Layout'
 
-import { Typography, Layout, Input, Row, Col, Button, Space } from 'antd';
+import { Typography, Layout, Input, Table, Col, Button, Space, Row, Form } from 'antd';
+import { set } from 'nerdamer';
 
 const { Title, Text } = Typography;
 const { TextArea } = Input;
@@ -31,20 +32,33 @@ export default function  LagrangePage() {
 
     const [data, setData] = useState([])
     const[decimal, setDecimal] =useState()
+    const[valx, setValx] = useState()
     const[equation, setEquation] = useState()
     const[x, setX] = useState()
+    const[fxn, setFxn] = useState()
+    const [solved, setSolved] = useState(false)
+    const [error, setError] = useState()
 
     const onCalculate = () => {
-        console.log('data',data)
-        let result = computeLagrange(data, 5, decimal)
+       try {
+        let result = computeLagrange(data, 5, decimal, valx)
         setEquation(result.answer)
         setX(result.final)
-        console.log('result',result)
+        setFxn(result.fx)
+        setSolved(true)
+       } catch (error) {
+           alert(error)
+       }
     }
 
     const changeDecimal = (e) => {
         let eA = parseInt(e.target.value)
         setDecimal(eA)
+    }
+
+    const changeValX = (e) => {
+        let eA = parseInt(e.target.value)
+        setValx(eA)
     }
 
     const changeInput = (input) => {
@@ -66,16 +80,48 @@ export default function  LagrangePage() {
         setData(inputData)
     }
 
-    let instruction = `Enter the given in tis format: \n
-        x  f(x) \n
-        5  2 \n
-        3  2 \n
-        1  2 \n
-    ` 
+    let instruction = `Enter the given in this format:` 
     let note = `Take Note: \n
     *It will only accept the first 2 numbers per line separated by space.
     `
 
+    const columns = [
+        {
+          title: 'x',
+          dataIndex: 'x',
+          key: 'x',
+          width: '50%'
+        },
+        {
+          title: 'f(x)',
+          dataIndex: 'fxn',
+          key: 'fxn',
+          width: '50%'
+        },
+    ]
+
+    const example = [
+        {
+          key: '1',
+          x: 5,
+          fxn: 3,
+        },
+        {
+            key: '2',
+            x: 8,
+            fxn: 3
+        },
+        {
+            key: '3',
+            x: 9,
+            fxn: 4
+        },
+        {
+            key: '4',
+            x: 8,
+            fxn: 7
+        },
+      ];
     return (
         <LayoutComponent>
         <Layout
@@ -124,26 +170,65 @@ export default function  LagrangePage() {
                         <Text style={{whiteSpace: 'break-spaces'}}>
                             {instruction}
                         </Text>
+                        <Table dataSource={example} columns={columns} pagination={false} size='small' style={{width: '20vh'}} />
+                        <Text>{error}</Text>
                         <Text italic>
-                            {note}
+                                {note}
                         </Text>
-                        <TextArea
-                            onChange={(e) =>
-                                changeInput(e.target.value)
-                            }
-                            rows={5}/>
+                        <Form onFinish={onCalculate} initialValues={{remember: true}}>
+                            <Form.Item name="data"
+                             rules={[
+                                {
+                                  required: true,
+                                  message: 'This field is required',
+                                },
+                                ]}>
+
+                            <TextArea
+                                placeholder="Input your data"
+                                onChange={(e) =>
+                                    changeInput(e.target.value)
+                                }
+                                rows={5}/>
+                            </Form.Item>
+                            <Form.Item name="decimal"
+                             rules={[
+                                {
+                                  required: true,
+                                  message: 'This field is required!',
+                                },
+                                ]}>
+                                    <Text >
+                                        Decimal Point (Maximum of 5 decimal places only)
+                                    </Text>
+                                    <Input type="number" onChange={changeDecimal} placeholder="5" />
+                            </Form.Item>
+                            <Form.Item name="valx"
+                                 rules={[
+                                    {
+                                      required: true,
+                                      message: 'This field is required!',
+                                    },
+                                    ]}                            
+                            >
+                                    <Text>
+                                        Value of x given
+                                    </Text>
+                                    <Input type="number" onChange={changeValX}  placeholder="5" />
+                            </Form.Item>
+                            <Form.Item>
+                            <Button htmlType='submit' style={{marginTop: 15}}>Calculate</Button>
+                            </Form.Item>
+                        </Form>
+                        
                     </Col>
-                <Col className="gutter-row" xs={6} sm={6} md={6} lg={6} xl={6}>
-                            <Text>
-                                Decimal Point
-                            </Text>
-                            <Input type="number" onChange={changeDecimal} placeholder="5" />
-                </Col>
-                <Button style={{marginTop: 15}} onClick={onCalculate}>Calculate</Button>
-                <div style={{display:'grid', marginTop: 15}}>
+                <div
+                hidden={!solved}
+                style={{display:'grid', marginTop: 15}}>
                     <Text italic>Answers:</Text>
-                    <Text>x = {x}</Text>
                     <Text>Equation : {equation}</Text>
+                    <Text>Value of x = {x} </Text>
+                    <Text>f(x) of the given x = {fxn} </Text>
                 </div>
             </div>
         </Layout>
