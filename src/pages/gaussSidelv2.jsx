@@ -325,10 +325,14 @@ export default function GaussSidel() {
                                 fontSize: "12px"
                             }}
                         >
-                            Note: <br/>
-                            √4 should be entered as 2,
-                            <br />
-                            4/2 should also be entered as 2
+                            *Note: Fractions and square roots needs to be simplified.
+                                    <br/>
+                                    Example: <br/>
+                                    √4 should be entered as 2,
+                                    <br />
+                                    4/2 should be entered as 2,
+                                    <br/>
+                                    2/4 should be entered as 0.5
                         </Text>
                         <Text
                             hidden={!errorInput}

@@ -155,6 +155,25 @@ export default function NewtonPage() {
                         }}
                         gutter={12}>
                         <Col className="gutter-row" xs={12} sm={12} md={12} lg={12} xl={12}>
+                            <div style={{display:'grid', marginBottom: '10px'}}>
+                                <Text
+                                    strong
+                                >
+                                    Input the f(x) equation below. You can use ^ to indicate the exponent of x.
+                                </Text>
+                                <Text
+                                    italic
+                                >
+                                    *Note: Fractions and square roots needs to be simplified.
+                                    <br/>
+                                    Example: <br/>
+                                    √4 should be entered as 2,
+                                    <br />
+                                    4/2 should be entered as 2,
+                                    <br/>
+                                    2/4 should be entered as 0.5
+                                </Text>
+                            </div>
                             <Row
                                 gutter={12}
                             >

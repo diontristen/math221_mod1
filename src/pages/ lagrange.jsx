@@ -81,8 +81,7 @@ export default function  LagrangePage() {
     }
 
     let instruction = `Enter the given in this format:` 
-    let note = `Take Note: \n
-    *It will only accept the first 2 numbers per line separated by space.
+    let note = `*It will only accept the first 2 numbers per line separated by space.
     `
 
     const columns = [
@@ -172,9 +171,28 @@ export default function  LagrangePage() {
                         </Text>
                         <Table dataSource={example} columns={columns} pagination={false} size='small' style={{width: '20vh'}} />
                         <Text>{error}</Text>
-                        <Text italic>
+                        <div style={{display: 'grid'}}>
+                            <Text
+                                        italic
+                                        strong
+                                    >
+                                        Note: 
+                                    </Text>
+                            <Text italic>
+                                    *Fractions and square roots needs to be simplified.
+                                        <br/>
+                                        Example: <br/>
+                                        √4 should be entered as 2,
+                                        <br />
+                                        4/2 should be entered as 2,
+                                        <br/>
+                                        2/4 should be entered as 0.5
+                            </Text>
+                            <Text>
                                 {note}
-                        </Text>
+                            </Text>
+                        </div>
+                        
                         <Form onFinish={onCalculate} initialValues={{remember: true}}>
                             <Form.Item name="data"
                              rules={[
