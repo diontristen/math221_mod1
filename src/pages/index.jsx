@@ -16,15 +16,19 @@ export default function Index() {
             style={{
                 display: "flex",
                 justifyContent: "center",
-                maxWidth: "1600px"
+                maxWidth: "1600px",
+                margin: "auto auto"
+
             }}
         >
             <Row
             style={{
-                width: "80%"
+                width: "80%",
+                margin: "auto auto"
             }}
                 justify="center"
                 gutter={12}
+                
             >
                 <Col 
                   
