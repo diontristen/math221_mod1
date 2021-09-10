@@ -104,7 +104,6 @@ export const parseResult = (data,  noRoots) => {
 export const parseColumn = (data) => {
     let column = []
     Object.keys(data[0]).forEach((value, index) => {
-        console.log(index)
         let data = {
             title: value,
             dataIndex: value,

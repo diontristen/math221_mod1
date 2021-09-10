@@ -1,3 +1,7 @@
 .ant-table-cell {
     padding: 0px 0px !important; 
 }
+
+th.ant-table-cell {
+    font-weight: 900 !important;
+}

@@ -10,7 +10,7 @@ const { Content, Footer, Sider } = Layout;
 
 export default function LayoutComponent({ children }) {
     let history = useHistory()
-    const [collapsed, setCollapsed] = useState(false)
+    const [collapsed, setCollapsed] = useState(true)
     const [key, setKey] = useState()
     useEffect(() => {
         let path = window.location.pathname
@@ -32,7 +32,6 @@ export default function LayoutComponent({ children }) {
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
-            {console.log('k', key)}
             <Sider collapsible collapsed={collapsed} onCollapse={toggleSidebar}>
                 <div className="logo" style={{
                     padding: 15

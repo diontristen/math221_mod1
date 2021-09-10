@@ -1,5 +1,5 @@
 import {
-    evaluate, simplify, round
+   simplify, round
 } from 'mathjs'
 
 export const computeNewton = (x0, equation, derivative, error, roundOff) => {
@@ -45,7 +45,7 @@ export const computeNewton = (x0, equation, derivative, error, roundOff) => {
     if (validate === false) {
         return {
             status: false,
-            result: "Reached maximum iteration (1000)."
+            result: "Reached maximum iteration (100)."
         }
     }
 
@@ -57,7 +57,6 @@ export const computeNewton = (x0, equation, derivative, error, roundOff) => {
 
 
 const computeError = (x0,x1, error, roundOff) => {
-    console.log(Math.abs(round(x1-x0, roundOff)), error)
     return Math.abs(round(x1-x0, roundOff)) < error ? true : false
 }
 

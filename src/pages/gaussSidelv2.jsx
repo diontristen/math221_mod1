@@ -168,6 +168,11 @@ export default function GaussSidel() {
 
     const changeRoot = (e) => {
         let root = parseInt(e.target.value)
+
+        if (root > 5 || root < 1) {
+            setNoRoots(3)
+            return false
+        }
         setNoRoots(root)
     }
 
@@ -244,10 +249,6 @@ export default function GaussSidel() {
         ))
     }
 
-    let instruction = `
-        Enter the given equation
-    `
-
     return (
         <LayoutComponent>
             <Layout
@@ -296,11 +297,11 @@ export default function GaussSidel() {
                         marginTop: 15
                     }}
                     gutter={12}>
-                    <Col className="gutter-row" xs={4} sm={4} md={4} lg={4} xl={4}>
+                    <Col className="gutter-row" xs={6} sm={6} md={6} lg={6} xl={6}>
                         <Text>
-                            Enter number of roots to find
+                            Enter number of roots to find with maximum of 5.
                         </Text>
-                        <Input onChange={changeRoot} placeholder="3" />
+                        <Input type="number" max="5" onChange={changeRoot} value={noRoots} placeholder="3" />
                     </Col>
                 </Row>
 

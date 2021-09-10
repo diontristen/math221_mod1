@@ -1,5 +1,5 @@
 import {
-    evaluate, simplify, round, multiply
+    simplify, round
 } from 'mathjs'
 import nerdamer from 'nerdamer'
 import Polynomial from 'polynomial'
@@ -31,7 +31,6 @@ export const computeLagrange = (data, x, decimal, valx) => {
     let final = Polynomial(answer).eval(x)
     final = round(final, decimal)
     let fx = computeFxn(answer, valx, decimal)
-    console.log('fx', fx)
     return {
         answer,
         results,
@@ -55,7 +54,7 @@ const getEquation = (numerator, simplified, decimal) => {
 
 const getFinalEquation = (data, decimal) => {
     let answer = ""
-    console.log('answer' ,data)
+    console.log('answer', data)
     data.forEach((item, index) => {
         let tempEquation = Polynomial(item.equation).coeff
         let equation = parseEquation(tempEquation, decimal)
@@ -68,15 +67,6 @@ const getFinalEquation = (data, decimal) => {
 
         }
     })
-    // console.log('dion ', answer)
-
-    // let coeff = Polynomial(answer).coeff
-    // let equation = parseEquation(coeff, decimal)
-
-
-    let x = Polynomial(answer)
-   // console.log('dion' ,x.coeff)
-  
     return answer
 }
 
@@ -107,7 +97,6 @@ const parseEquation = (coeff, decimal) => {
 
 const computeNumerator = (data, index, total) => {
     let numerator = ''
- //   console.log('total', total)
     for (let i = 0; i < total; i++) {
         if (i !== index) {
             let number = data[i][0].toString()
@@ -140,11 +129,8 @@ const simplifyFraction = (numerator, denominator, decimal) => {
     return round(numerator / parseFloat(denominator), decimal)
 }
 
-const computeFxn = (data , val, decimal) => {
-    console.log('data', data)
+const computeFxn = (data, val, decimal) => {
     let x = simplify(data)
-    console.log('fx', x)
-    let answer = round(x.evaluate({x : val}), decimal)
-   // console.log(answer)
+    let answer = round(x.evaluate({ x: val }), decimal)
     return answer
 }

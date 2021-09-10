@@ -4,7 +4,6 @@ import LayoutComponent from '../components/Layout'
 import Polynomial from 'polynomial'
 
 import { Typography, Layout, Input, Row, Col, Button, Table, Space } from 'antd';
-import { ArrowRightOutlined } from '@ant-design/icons';
 const { Title, Text } = Typography;
 
 export default function NewtonPage() {
@@ -135,7 +134,7 @@ export default function NewtonPage() {
                                 fontSize: "12px"
                             }}
                         >
-                            Note: Solve polynomial equations only
+                            Note: Solve polynomial equations only, and has a limit of 100 iterations.
 
                         </Text>
                     </Space>
@@ -358,6 +357,21 @@ export default function NewtonPage() {
                     </Title>
                     <Text>
                         X = {roots}
+                    </Text>
+                </div>
+                <div
+                    hidden={!solved}
+                    style={{
+                        marginTop: 15
+                    }}
+                >
+                    <Title
+                        level={5}
+                    >
+                       Number of Iterations
+                    </Title>
+                    <Text>
+                        k = {rowData.length}
                     </Text>
                 </div>
                 <div
