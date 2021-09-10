@@ -57,6 +57,6 @@ export const computeNewton = (x0, equation, derivative, error, roundOff) => {
 
 
 const computeError = (x0,x1, error, roundOff) => {
-    return Math.abs(round(x1-x0, roundOff)) < error ? true : false
+    return Math.abs(round(x1-x0, roundOff)) <= error ? true : false
 }
 

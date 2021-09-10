@@ -74,7 +74,7 @@ const compute = (index, variables, constants, decimal) => {
 
 
 const computeError = (x0,x1, error, decimal) => {
-    return Math.abs(round(x1-x0, decimal)) < error ? true : false
+    return Math.abs(round(x1-x0, decimal)) <= error ? true : false
 }
 
 export const parseResult = (data,  noRoots) => {
@@ -115,6 +115,3 @@ export const parseColumn = (data) => {
     return column
 }
 
-export const getRoots = (data) => {
-    
-}

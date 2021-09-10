@@ -141,8 +141,9 @@ export default function GaussSidel() {
     }
 
     const renderRearrangeData = (data) => {
+        
         return data.map((value, index) => (
-            <Text>{value}{index === noRoots ? "" : `X${noRoots - index}`} {index === noRoots ? "" : index === noRoots - 1 ? "=" : "+"}</Text>
+            <Text>{value}{index === noRoots ? "" : `X${index + 1}`} {index === noRoots ? "" : index === noRoots - 1 ? "=" : "+"}</Text>
         ))
     }
 
