@@ -216,9 +216,7 @@ export default function  LagrangePage() {
                                   message: 'This field is required!',
                                 },
                                 ]}>
-                                    <Text >
-                                        Decimal Point (Maximum of 5 decimal places only)
-                                    </Text>
+                                    Number of Decimal Places
                                     <Input type="number" onChange={changeDecimal} placeholder="5" />
                             </Form.Item>
                             <Form.Item name="valx"
@@ -229,9 +227,7 @@ export default function  LagrangePage() {
                                     },
                                     ]}                            
                             >
-                                    <Text>
                                         Value of x given
-                                    </Text>
                                     <Input type="number" onChange={changeValX}  placeholder="5" />
                             </Form.Item>
                             <Form.Item>
