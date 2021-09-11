@@ -216,7 +216,8 @@ export default function  LagrangePage() {
                                   message: 'This field is required!',
                                 },
                                 ]}>
-                                    <Input type="number" onChange={changeDecimal} placeholder="Number of decimal point (max of 5)" />
+                                    Number of Decimal Places
+                                    <Input type="number" onChange={changeDecimal} placeholder="5" />
                             </Form.Item>
                             <Form.Item name="valx"
                                  rules={[
@@ -226,7 +227,8 @@ export default function  LagrangePage() {
                                     },
                                     ]}                            
                             >
-                                    <Input type="number" onChange={changeValX}  placeholder="Value of x" />
+                                        Value of x given
+                                    <Input type="number" onChange={changeValX}  placeholder="5" />
                             </Form.Item>
                             <Form.Item>
                             <Button htmlType='submit' style={{marginTop: 15}}>Calculate</Button>
