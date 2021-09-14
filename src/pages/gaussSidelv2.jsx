@@ -362,13 +362,13 @@ export default function GaussSidel() {
                             marginTop: 15
                         }}
                         gutter={12}>
-                        <Col className="gutter-row" xs={6} sm={6} md={6} lg={6} xl={6}>
+                        <Col className="gutter-row" xs={8} sm={8} md={6} lg={6} xl={6}>
                             <Text>
                                 Iteration Rule
                             </Text>
                             <Input onChange={changeRule} placeholder="0.0001" />
                         </Col>
-                        <Col className="gutter-row" xs={6} sm={6} md={6} lg={6} xl={6}>
+                        <Col className="gutter-row" xs={8} sm={8} md={6} lg={6} xl={6}>
                             <Text>
                                 Decimal Points
                             </Text>

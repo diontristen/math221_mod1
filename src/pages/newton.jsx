@@ -153,7 +153,7 @@ export default function NewtonPage() {
                             marginTop: 15
                         }}
                         gutter={12}>
-                        <Col className="gutter-row" xs={12} sm={12} md={12} lg={12} xl={12}>
+                        <Col className="gutter-row" xs={24} sm={24} md={18} lg={12} xl={12}>
                             <div style={{display:'grid', marginBottom: '10px'}}>
                                 <Text
                                     strong
@@ -210,7 +210,7 @@ export default function NewtonPage() {
                                         </div>
                                     </Text>
                                 </Col>
-                                <Col className="gutter-row" xs={18} sm={18} md={18} lg={18} xl={18}>
+                                <Col className="gutter-row" xs={16} sm={18} md={18} lg={18} xl={18}>
                                     <Input
                                         style={{
                                             flex: "1"
@@ -298,7 +298,7 @@ export default function NewtonPage() {
                             marginTop: 15
                         }}
                         gutter={12}>
-                        <Col className="gutter-row" xs={6} sm={6} md={6} lg={6} xl={6}>
+                        <Col className="gutter-row" xs={8} sm={8} md={6} lg={6} xl={6}>
                             <Text>
                                 Inital X Value
                             </Text>
@@ -308,7 +308,7 @@ export default function NewtonPage() {
 
                             }} type="number" placeholder="4" />
                         </Col>
-                        <Col className="gutter-row" xs={6} sm={6} md={6} lg={6} xl={6}>
+                        <Col className="gutter-row" xs={8} sm={8} md={6} lg={6} xl={6}>
                             <Text>
                                 Iteration Rule
                             </Text>
@@ -318,7 +318,7 @@ export default function NewtonPage() {
 
                             }} placeholder="0.0001" />
                         </Col>
-                        <Col className="gutter-row" xs={6} sm={6} md={6} lg={6} xl={6}>
+                        <Col className="gutter-row" xs={8} sm={8} md={6} lg={6} xl={6}>
                             <Text>
                                 Decimal Points
                             </Text>
